@@ -1,0 +1,7 @@
+.score-container {
+    display: flex;
+    font-weight: bold;
+    justify-content: end;
+    margin-bottom: 20px;
+    margin-right: 10px;
+}
