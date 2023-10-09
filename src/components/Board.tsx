@@ -3,6 +3,7 @@ import { State } from '../store/reducers';
 import { useDispatch, useSelector } from "react-redux";
 import { DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP, DIRECTION_DOWN, RESET_SCORE, moveSnake, resetGame, stopGame, updateScore, Coordinates, increaseSnake, INCREASE_SCORE } from "../store/actions";
 import './Board.css';
+import Instruction from './Instructions';
 
 const getRandomPosition = (position: number) => {
     const randomPosition = Math.random() * position;
@@ -140,16 +141,16 @@ const Board = ({ height, width }: CanvasScreen) => {
         };
     }, [notAllowedDirection, keyMovement]);
 
-    const resetBoard = useCallback(() => {
+    const resetGameNow = useCallback(() => {
         window.removeEventListener("keydown", keyMovement);
         dispatch(resetGame());
         dispatch(updateScore(RESET_SCORE));
         clearBoard(context);
-        designCharacters(context, snake, "#91C483");
+        designCharacters(context, snake, "#31C483");
         designCharacters(
             context,
             [generateRandomPosition(width - 20, height - 20)],
-            "#676FA3"
+            "#856FA3"
         );
         window.addEventListener("keydown", keyMovement);
     }, [context, dispatch, keyMovement, height, snake, width]);
@@ -157,8 +158,8 @@ const Board = ({ height, width }: CanvasScreen) => {
     useEffect(() => {
         setContext(canvasRef.current && canvasRef.current.getContext("2d"));
         clearBoard(context);
-        designCharacters(context, snake, "#91C483");
-        designCharacters(context, [position], "#676FA3");
+        designCharacters(context, snake, "#31C483");
+        designCharacters(context, [position], "#856FA3");
 
         if (snake[0].x === position?.x && snake[0].y === position?.y) {
             setIsEaten(true);
@@ -185,8 +186,11 @@ const Board = ({ height, width }: CanvasScreen) => {
                 ref={canvasRef}
                 width={width}
                 height={height}
+                style={{
+                    border: `1px solid ${endGame ? "red" : "#E3E7F1"}`,
+                  }}
             />
-            {/* <Instruction resetBoard={resetBoard} /> */}
+            <Instruction resetGame={resetGameNow} />
         </>
     );
 };
